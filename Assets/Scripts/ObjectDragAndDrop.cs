@@ -50,8 +50,6 @@ public class ObjectDragAndDrop : MonoBehaviour
         {
             if (Physics.Raycast(ray, out hit, maxRayDistance, draggableLayerMask))
             {
-                Debug.Log(hit.transform.gameObject.name);
-                
                 draggingObject = hit.transform.GetComponent<IDraggable>();
                 if (draggingObject != null && draggingObject.CanDrag())
                 {
@@ -133,7 +131,6 @@ public class ObjectDragAndDrop : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, maxRayDistance, inventoryLayerMask))
                 {
                     isOverBag = true;
-                    Debug.Log(hit.transform.gameObject.name);
                     var bagScreenPosition = renderCamera.WorldToScreenPoint(bag.position);
 
                     currentScreenSpace =

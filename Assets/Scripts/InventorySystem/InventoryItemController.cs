@@ -90,5 +90,10 @@ namespace InventorySystem
             
             EventBusManager.Bus.Publish(new OnBagLeaveEvent(this));
         }
+
+        public string GetID()
+        {
+            return model.ID.ToString();
+        }
     }
 }

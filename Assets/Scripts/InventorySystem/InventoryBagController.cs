@@ -1,14 +1,24 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using Managers;
 using UnityEngine;
+using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace InventorySystem
 {
+    [System.Serializable]
+    public class BagItemEvent : UnityEvent<string>
+    {
+    }
+    
     public class InventoryBagController : MonoBehaviour, IInventoryUICheckable
     {
         [SerializeField][Range(1,5)] private int size = 3;
         [SerializeField] private InventoryUIController uiController = null;
         [SerializeField][Range(0.0f,1.0f)] private float maxOffset = 0.15f;
+        [SerializeField] private BagItemEvent OnObjectAdded = null;
+        [SerializeField] private BagItemEvent OnObjectRemoved = null;
         private void Awake()
         {
             uiController.Initialize(size);
@@ -27,7 +37,6 @@ namespace InventorySystem
 
         private void OnBagEnterHandler(OnBagEnterEvent e)
         {
-            Debug.Log("OnBagEnterHandler called");
             if (uiController.HasFreeSpace())
             {
                 GameObject copy = null;
@@ -53,6 +62,7 @@ namespace InventorySystem
                 itemGO.transform.DOLocalMove(randOffset, 0.5f).SetEase(Ease.InOutCubic);
                 itemGO.transform.DORotate(transform.rotation.eulerAngles, 0.5f).SetEase(Ease.InOutCubic);
                 itemGO.transform.DOScale(Vector3.one * 0.25f, 0.5f).SetEase(Ease.InOutCubic);
+                OnObjectAdded?.Invoke(item.GetID());
             }
         }
 
@@ -82,8 +92,8 @@ namespace InventorySystem
 
         private void OnBagLeaveHandler(OnBagLeaveEvent e)
         {
-            Debug.Log("OnBagLeaveHandler called");
             uiController.RemoveItem(e.Item);
+            OnObjectRemoved?.Invoke(e.Item.GetID());
         }
 
         public void ShowUI()
