@@ -5,10 +5,15 @@ using UnityEngine;
 
 namespace InventorySystem
 {
-    public class InventoryItemModel : MonoBehaviour
+    [Serializable]
+    public class InventoryItemModel
     {
         [SerializeField] private System.Guid id = Guid.Empty;
-        public Guid ID => id;
+        public Guid ID
+        {
+            get => id;
+            set => id = value;
+        }
 
         [SerializeField] private InventoryItemData data = null;
         public InventoryItemData Data => data;
@@ -19,11 +24,5 @@ namespace InventorySystem
             get => currentState;
             set => currentState = value;
         }
-
-        private void Awake()
-        {
-            id = Guid.NewGuid();
-        }
-        
     }
 }

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7182252492231571252}
   - component: {fileID: 9035130990955121133}
   - component: {fileID: 9035130990955121132}
-  - component: {fileID: 8684890844983657095}
   - component: {fileID: 1939521294453150728}
   m_Layer: 8
   m_Name: Torus
@@ -112,20 +111,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8684890844983657095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9035130990955121122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3757fdb8c65504b46b4593742377bcd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: d012a5cdf7118aa4083697e8ce7af4bd, type: 2}
-  currentState: 0
 --- !u!114 &1939521294453150728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,4 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9068478aa074cb0806d303b9ec07b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: {fileID: 0}
+  model:
+    data: {fileID: 11400000, guid: d012a5cdf7118aa4083697e8ce7af4bd, type: 2}
+    currentState: 0
+  rBody: {fileID: 0}

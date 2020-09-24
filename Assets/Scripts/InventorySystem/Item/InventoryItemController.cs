@@ -8,17 +8,17 @@ namespace InventorySystem
 {
     public class InventoryItemController : MonoBehaviour, IDraggable, IBagThrowable
     {
-        [SerializeField] private InventoryItemModel model;
-        [SerializeField] private Rigidbody rBody;
+        [SerializeField] private InventoryItemModel model = new InventoryItemModel();
+        [SerializeField] private Rigidbody rBody = null;
         private Vector3 originalPosition;
 
         private void Awake()
         {
-            if (model == null)
+            if (model != null)
             {
-                model = GetComponent<InventoryItemModel>();
+                model.ID = Guid.NewGuid();
             }
-
+            
             if (rBody == null)
             {
                 rBody = GetComponent<Rigidbody>();

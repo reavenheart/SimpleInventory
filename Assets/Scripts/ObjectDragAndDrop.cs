@@ -43,121 +43,143 @@ public class ObjectDragAndDrop : MonoBehaviour
 
     private void Update()
     {
-        RaycastHit hit;
         Ray ray = renderCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(ray, out hit, maxRayDistance, draggableLayerMask))
-            {
-                draggingObject = hit.transform.GetComponent<IDraggable>();
-                if (draggingObject != null && draggingObject.CanDrag())
-                {
-                    isMouseDragging = true;
-                    draggingObject.OnDragEvent(isMouseDragging);
-                    draggingTransform = hit.transform;
-                    originalPosition = draggingTransform.position;
-                    positionOfScreen = renderCamera.WorldToScreenPoint(originalPosition);
-                    offsetValue = originalPosition - renderCamera.ScreenToWorldPoint(
-                        new Vector3(Input.mousePosition.x, Input.mousePosition.y, positionOfScreen.z));
-                }
-            }
-            if (Physics.Raycast(ray, out hit, maxRayDistance, inventoryLayerMask) && !isMouseDragging)
-            {
-                bagUI = hit.transform.GetComponent<IInventoryUICheckable>();
-                if (bagUI != null)
-                {
-                    bagUI.ShowUI();
-                    isCheckingUI = true;
-                }
-            }
+            CheckIfCanDrag(ray);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
             if (isMouseDragging)
             {
-                isMouseDragging = false;
-                draggingObject?.SetOriginalPosition(originalPosition);
-                if (isOverBag)
-                {
-                    if (draggingTransform != null)
-                    {
-                        var bagThrowable = draggingTransform.GetComponent<IBagThrowable>();
-                        bagThrowable?.PutInBag();
-                    }
-                }
-                else
-                {
-                    draggingObject?.OnDragEvent(isMouseDragging);
-                }
-
-                draggingTransform = null;
+                ReleaseDraggingItem();
             }
             else
             {
-                if (isCheckingUI)
-                {
-                    var pointer = new PointerEventData(EventSystem.current);
-                    pointer.position = Input.mousePosition;
-                    var raycastResults = new List<RaycastResult>();
-                    EventSystem.current.RaycastAll(pointer, raycastResults);
-
-                    foreach (RaycastResult result in raycastResults)
-                    {
-                        // Apply Custom Logic Here
-                        var foo = result.gameObject.GetComponent<InventoryCellController>();
-                        if (foo != null)
-                        {
-                            foo.ThrowItem();
-                        }
-                    }
-                    if (bagUI != null)
-                    {
-                        bagUI.HideUI();
-                    }
-                    isCheckingUI = false;
-                    bagUI = null;
-                }
+                ReleaseBagUI();
             }
         }
         
         if (isMouseDragging && draggingObject != null)
         {
-            if (draggingTransform != null)
+            DragItem(ray);
+        }
+    }
+
+    private void CheckIfCanDrag(Ray ray)
+    {
+        RaycastHit hit;
+        
+        if (Physics.Raycast(ray, out hit, maxRayDistance, draggableLayerMask))
+        {
+            draggingObject = hit.transform.GetComponent<IDraggable>();
+            if (draggingObject != null && draggingObject.CanDrag())
             {
-                Vector3 currentScreenSpace;
-                
-                if (Physics.Raycast(ray, out hit, maxRayDistance, inventoryLayerMask))
-                {
-                    isOverBag = true;
-                    var bagScreenPosition = renderCamera.WorldToScreenPoint(bag.position);
-
-                    currentScreenSpace =
-                        new Vector3(Input.mousePosition.x, Input.mousePosition.y, bagScreenPosition.z);
-                    draggingTransform.position = Vector3.Lerp(
-                        draggingTransform.position,
-                        renderCamera.ScreenToWorldPoint(currentScreenSpace) + offsetValue,
-                        0.5f);
-
-                    draggingTransform.localScale = Vector3.Lerp(
-                        draggingTransform.localScale,
-                        new Vector3(0.2f, 0.2f, 0.2f),
-                        0.5f);
-                }
-                else
-                {
-                    isOverBag = false;
-                    currentScreenSpace =
-                        new Vector3(Input.mousePosition.x, Input.mousePosition.y, positionOfScreen.z);
-                    draggingTransform.position = renderCamera.ScreenToWorldPoint(currentScreenSpace) + offsetValue;
-                    
-                    draggingTransform.localScale = Vector3.Lerp(
-                        draggingTransform.localScale,
-                        Vector3.one,
-                        0.5f);
-                }
+                isMouseDragging = true;
+                draggingObject.OnDragEvent(isMouseDragging);
+                draggingTransform = hit.transform;
+                originalPosition = draggingTransform.position;
+                positionOfScreen = renderCamera.WorldToScreenPoint(originalPosition);
+                offsetValue = originalPosition - renderCamera.ScreenToWorldPoint(
+                    new Vector3(Input.mousePosition.x, Input.mousePosition.y, positionOfScreen.z));
             }
         }
+        if (Physics.Raycast(ray, out hit, maxRayDistance, inventoryLayerMask) && !isMouseDragging)
+        {
+            bagUI = hit.transform.GetComponent<IInventoryUICheckable>();
+            if (bagUI != null)
+            {
+                bagUI.ShowUI();
+                isCheckingUI = true;
+            }
+        }
+    }
+
+    private void ReleaseBagUI()
+    {
+        if (isCheckingUI)
+        {
+            var pointer = new PointerEventData(EventSystem.current);
+            pointer.position = Input.mousePosition;
+            var raycastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointer, raycastResults);
+
+            foreach (RaycastResult result in raycastResults)
+            {
+                // Apply Custom Logic Here
+                var foo = result.gameObject.GetComponent<InventoryCellController>();
+                if (foo != null)
+                {
+                    foo.ThrowItem();
+                }
+            }
+            if (bagUI != null)
+            {
+                bagUI.HideUI();
+            }
+            isCheckingUI = false;
+            bagUI = null;
+        }
+    }
+
+    private void DragItem(Ray ray)
+    {
+        if (draggingTransform != null)
+        {
+            RaycastHit hit;
+            Vector3 currentScreenSpace;
+                
+            if (Physics.Raycast(ray, out hit, maxRayDistance, inventoryLayerMask))
+            {
+                isOverBag = true;
+                var bagScreenPosition = renderCamera.WorldToScreenPoint(bag.position);
+
+                currentScreenSpace =
+                    new Vector3(Input.mousePosition.x, Input.mousePosition.y, bagScreenPosition.z);
+                draggingTransform.position = Vector3.Lerp(
+                    draggingTransform.position,
+                    renderCamera.ScreenToWorldPoint(currentScreenSpace) + offsetValue,
+                    0.5f);
+
+                draggingTransform.localScale = Vector3.Lerp(
+                    draggingTransform.localScale,
+                    new Vector3(0.2f, 0.2f, 0.2f),
+                    0.5f);
+            }
+            else
+            {
+                isOverBag = false;
+                currentScreenSpace =
+                    new Vector3(Input.mousePosition.x, Input.mousePosition.y, positionOfScreen.z);
+                draggingTransform.position = renderCamera.ScreenToWorldPoint(currentScreenSpace) + offsetValue;
+                    
+                draggingTransform.localScale = Vector3.Lerp(
+                    draggingTransform.localScale,
+                    Vector3.one,
+                    0.5f);
+            }
+        }
+    }
+
+    private void ReleaseDraggingItem()
+    {
+        isMouseDragging = false;
+        draggingObject?.SetOriginalPosition(originalPosition);
+        if (isOverBag)
+        {
+            if (draggingTransform != null)
+            {
+                var bagThrowable = draggingTransform.GetComponent<IBagThrowable>();
+                bagThrowable?.PutInBag();
+            }
+        }
+        else
+        {
+            draggingObject?.OnDragEvent(isMouseDragging);
+        }
+
+        draggingTransform = null;
     }
 }
