@@ -51,6 +51,7 @@ namespace InventorySystem
             {
                 Vector3 randOffset = new Vector3(Random.Range(-maxOffset, maxOffset),Random.Range(-maxOffset, maxOffset),Random.Range(-maxOffset, maxOffset));
                 itemGO.transform.DOLocalMove(randOffset, 0.5f).SetEase(Ease.InOutCubic);
+                itemGO.transform.DORotate(transform.rotation.eulerAngles, 0.5f).SetEase(Ease.InOutCubic);
                 itemGO.transform.DOScale(Vector3.one * 0.25f, 0.5f).SetEase(Ease.InOutCubic);
             }
         }

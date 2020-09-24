@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using Managers;
 using UnityEngine;
 using Utils;
@@ -72,7 +73,21 @@ namespace InventorySystem
         public void RemoveFromBag()
         {
             //PutOnOriginalPosition();
-            OnDragEvent(false);
+            //OnDragEvent(false);
+            transform.SetParent(null);
+            
+            transform.DOMove(transform.position + Vector3.up * 0.2f, 0.25f).OnComplete(() =>
+            {
+                rBody.velocity = (transform.up * 0.25f + transform.forward * 1.25f + transform.right * 1.25f).normalized * 0.5f;
+                rBody.useGravity = true;
+                rBody.isKinematic = false;
+                transform.DOScale(Vector3.one, 1.0f).SetEase(Ease.OutCubic).OnComplete(() =>
+                {
+                    model.CurrentState = InventoryItemState.Free;
+                });
+            });
+            
+            
             EventBusManager.Bus.Publish(new OnBagLeaveEvent(this));
         }
     }

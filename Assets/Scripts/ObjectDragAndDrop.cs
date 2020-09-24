@@ -16,7 +16,6 @@ public class ObjectDragAndDrop : MonoBehaviour
     [SerializeField] private LayerMask draggableLayerMask = 0;
     [SerializeField] private LayerMask inventoryLayerMask = 0;
     [SerializeField][Range(0,5)] private float maxRayDistance = 1;
-    [SerializeField] private GraphicRaycaster gRaycaster = null;
     private bool isMouseDragging = false;
     private bool isOverBag = false;
     private Vector3 offsetValue;
