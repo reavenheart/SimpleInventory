@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using InventorySystem;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityTemplateProjects;
 using Utils;
 
@@ -13,6 +15,7 @@ public class ObjectDragAndDrop : MonoBehaviour
     [SerializeField] private LayerMask draggableLayerMask;
     [SerializeField] private LayerMask inventoryLayerMask;
     [SerializeField][Range(0,5)] private float maxRayDistance;
+    [SerializeField] private GraphicRaycaster gRaycaster;
     private bool isMouseDragging = false;
     private bool isOverBag = false;
     private Vector3 offsetValue;
@@ -63,20 +66,43 @@ public class ObjectDragAndDrop : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            isMouseDragging = false;
-            draggingTransform.position = originalPosition;
-            if (isOverBag)
+            if (isMouseDragging)
             {
-                var bagThrowable = draggingTransform.GetComponent<IBagThrowable>();
-                bagThrowable?.PutInBag();
+                isMouseDragging = false;
+                draggingObject?.SetOriginalPosition(originalPosition);
+                if (isOverBag)
+                {
+                    if (draggingTransform != null)
+                    {
+                        var bagThrowable = draggingTransform.GetComponent<IBagThrowable>();
+                        bagThrowable?.PutInBag();
+                    }
+                }
+                else
+                {
+                    draggingObject?.OnDragEvent(isMouseDragging);
+                }
+
+                draggingTransform = null;
             }
             else
             {
-                draggingObject?.OnDragEvent(isMouseDragging);
+                var pointer = new PointerEventData(EventSystem.current);
+                pointer.position = Input.mousePosition;
+                var raycastResults = new List<RaycastResult>();
+                EventSystem.current.RaycastAll(pointer, raycastResults);
+                 
+                foreach (RaycastResult result in raycastResults) {
+                    // Apply Custom Logic Here
+                    var foo = result.gameObject.GetComponent<InventoryCellController>();
+                    if (foo != null) {
+                        Debug.Log("Cell Found");
+                        foo.ThrowItem();
+                    }
+                }
             }
-            draggingTransform = null;
         }
-
+        
         if (isMouseDragging && draggingObject != null)
         {
             if (draggingTransform != null)

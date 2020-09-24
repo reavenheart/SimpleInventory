@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using GameEventBus;
 
-public class EventBusManager : MonoBehaviour
+namespace Managers
 {
-    private static EventBusManager instance;
-    public static EventBusManager I => instance;
-
-    private void Awake()
+    public static class EventBusManager
     {
-        if (instance == null)
+        private static EventBus bus = null;
+        public static EventBus Bus
         {
-            instance = this;
+            get { return bus ?? (bus = new EventBus()); }
         }
     }
 }
