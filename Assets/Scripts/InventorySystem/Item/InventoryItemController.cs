@@ -2,6 +2,7 @@
 using DG.Tweening;
 using Managers;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Utils;
 
 namespace InventorySystem
@@ -13,7 +14,9 @@ namespace InventorySystem
     {
         [SerializeField] private InventoryItemModel model = new InventoryItemModel();
         [SerializeField] private Rigidbody rBody = null;
+        private Material material;
         private Vector3 originalPosition;
+        private static readonly int OutlineWidth = Shader.PropertyToID("_OutlineWidth");
 
         private void Awake()
         {
@@ -31,6 +34,7 @@ namespace InventorySystem
         private void Start()
         {
             gameObject.name = model.Data.itemName + "_" + model.ID.ToString();
+            material = GetComponent<MeshRenderer>().material;
         }
 
         public bool CanDrag()
@@ -57,6 +61,12 @@ namespace InventorySystem
         public void SetOriginalPosition(Vector3 originalPosition)
         {
             this.originalPosition = originalPosition;
+        }
+
+        public void HightlightAvailableForDrag()
+        {
+            if (model.CurrentState == InventoryItemState.Free)
+                material.DOFloat(0.5f,OutlineWidth, 0.25f);
         }
 
         public void PutOnOriginalPosition()
@@ -95,6 +105,11 @@ namespace InventorySystem
         public string GetID()
         {
             return model.ID.ToString();
+        }
+
+        private void OnMouseExit()
+        {
+            material.DOFloat(0.0f,OutlineWidth, 0.25f);
         }
     }
 }

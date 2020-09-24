@@ -17949,6 +17949,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialCanvas: {fileID: 1102084447}
   tutorialContainer: {fileID: 715631548}
+  tutorialDuration: 5
 --- !u!1 &1126320529
 GameObject:
   m_ObjectHideFlags: 0
@@ -18048,6 +18049,7 @@ MonoBehaviour:
   generateNumber: 3
   fieldSize: 5
   generationHeight: 0.5
+  itemMaterial: {fileID: 2100000, guid: 41d3024743c374a4eb32f16a2983e65a, type: 2}
 --- !u!1 &1310087005
 GameObject:
   m_ObjectHideFlags: 0

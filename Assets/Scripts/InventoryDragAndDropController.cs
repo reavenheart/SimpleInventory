@@ -47,6 +47,15 @@ public class InventoryDragAndDropController : MonoBehaviour
     private void Update()
     {
         Ray ray = renderCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, maxRayDistance, draggableLayerMask))
+        {
+            draggingObject = hit.transform.GetComponent<IDraggable>();
+            if (draggingObject != null && draggingObject.CanDrag())
+            {
+                draggingObject.HightlightAvailableForDrag();
+            }
+        }
 
         if (Input.GetMouseButtonDown(0))
         {

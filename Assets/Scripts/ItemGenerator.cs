@@ -13,6 +13,7 @@ public class ItemGenerator : MonoBehaviour
     
     [SerializeField][Range(1,10)] private int fieldSize = 5;
     [SerializeField][Range(0,2)] private float generationHeight = 0.5f;
+    [SerializeField] private Material itemMaterial = null;
     
     // Start is called before the first frame update
     IEnumerator Start()
@@ -26,6 +27,8 @@ public class ItemGenerator : MonoBehaviour
                 );
 
             var item = Instantiate(items[Random.Range(0, items.Count)]);
+
+            item.GetComponent<MeshRenderer>().material = Instantiate(itemMaterial);
 
             item.transform.position = position;
             
