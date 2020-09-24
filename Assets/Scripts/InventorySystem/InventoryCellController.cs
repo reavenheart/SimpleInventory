@@ -4,11 +4,12 @@ using UnityEngine.EventSystems;
 
 namespace InventorySystem
 {
-    public class InventoryCellController : MonoBehaviour 
+    public class InventoryCellController : MonoBehaviour
     {
         [SerializeField] private InventoryCellModel model = null;
         [SerializeField] private float itemScale = 100;
         public bool IsFree => model.IsFree;
+
         private void Awake()
         {
             model = new InventoryCellModel();
@@ -18,13 +19,11 @@ namespace InventorySystem
         {
             model.bagItem = item;
             model.bagCopy = copy;
-            //var itemGO = item as MonoBehaviour;
-            //if (itemGO != null)
-            //{
-                copy.transform.SetParent(transform, false);
-                copy.transform.localScale= Vector3.one * itemScale;
-            //}
+
+            copy.transform.SetParent(transform, false);
+            copy.transform.localScale = Vector3.one * itemScale;
         }
+
         public void ClearCell()
         {
             Destroy(model.bagCopy);
@@ -36,7 +35,7 @@ namespace InventorySystem
         {
             if (!IsFree)
             {
-                model.bagItem.RemoveFromBag();       
+                model.bagItem.RemoveFromBag();
             }
         }
 

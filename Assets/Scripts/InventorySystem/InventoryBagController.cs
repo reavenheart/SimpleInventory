@@ -1,14 +1,14 @@
-﻿using System;
+﻿using DG.Tweening;
 using Managers;
 using UnityEngine;
 
 namespace InventorySystem
 {
-    public class InventoryBagController : MonoBehaviour
+    public class InventoryBagController : MonoBehaviour, IInventoryUICheckable
     {
         [SerializeField][Range(1,5)] private int size = 3;
-        [SerializeField] private InventoryUIController uiController;
-
+        [SerializeField] private InventoryUIController uiController = null;
+        [SerializeField][Range(0.0f,1.0f)] private float maxOffset = 0.15f;
         private void Awake()
         {
             uiController.Initialize(size);
@@ -35,11 +35,23 @@ namespace InventorySystem
                 if (copy != null)
                 {
                     uiController.AddItem(e.Item, copy);
+                    PlaceInTheBag(e.Item);
                 }
             }
             else
             {
                 e.Item.RemoveFromBag();
+            }
+        }
+
+        private void PlaceInTheBag(IBagThrowable item)
+        {
+            var itemGO = item as MonoBehaviour;
+            if (itemGO != null)
+            {
+                Vector3 randOffset = new Vector3(Random.Range(-maxOffset, maxOffset),Random.Range(-maxOffset, maxOffset),Random.Range(-maxOffset, maxOffset));
+                itemGO.transform.DOLocalMove(randOffset, 0.5f).SetEase(Ease.InOutCubic);
+                itemGO.transform.DOScale(Vector3.one * 0.25f, 0.5f).SetEase(Ease.InOutCubic);
             }
         }
 
@@ -71,6 +83,16 @@ namespace InventorySystem
         {
             Debug.Log("OnBagLeaveHandler called");
             uiController.RemoveItem(e.Item);
+        }
+
+        public void ShowUI()
+        {
+            uiController.ShowUI();
+        }
+
+        public void HideUI()
+        {
+            uiController.HideUI();
         }
     }
 }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5101c8ecf773d44a34dd69f4f3348e, type: 3}
   m_Name: TorusKnot01
   m_EditorClassIdentifier: 
-  name: Torus Knot 01
+  itemName: TorusKnot01
   mass: 1
   type: 6

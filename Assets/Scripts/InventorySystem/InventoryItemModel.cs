@@ -14,7 +14,11 @@ namespace InventorySystem
         public InventoryItemData Data => data;
 
         [SerializeField] private InventoryItemState currentState = InventoryItemState.Free;
-        public InventoryItemState CurrentState => currentState;
+        public InventoryItemState CurrentState
+        {
+            get => currentState;
+            set => currentState = value;
+        }
 
         private void Awake()
         {

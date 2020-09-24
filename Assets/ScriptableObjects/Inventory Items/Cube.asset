@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5101c8ecf773d44a34dd69f4f3348e, type: 3}
   m_Name: Cube
   m_EditorClassIdentifier: 
-  name: Cube
+  itemName: Cube
   mass: 1
   type: 4

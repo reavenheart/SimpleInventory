@@ -6,8 +6,9 @@ namespace InventorySystem
 {
     public class InventoryUIController : MonoBehaviour
     {
-        [SerializeField] private InventoryCellController cellPrefab;
-        [SerializeField] private RectTransform cellContainer;
+        [SerializeField] private InventoryCellController cellPrefab = null;
+        [SerializeField] private RectTransform cellContainer = null;
+        [SerializeField] private Canvas canvas = null;
         private List<InventoryCellController> cells = new List<InventoryCellController>();
         
         public void Initialize(int cellNumber)
@@ -18,6 +19,7 @@ namespace InventorySystem
                 cell.transform.localScale = Vector3.one;
                 cells.Add(cell);
             }
+            cellContainer.gameObject.SetActive(false);
         }
 
         public bool HasFreeSpace()
@@ -41,6 +43,18 @@ namespace InventorySystem
             {
                 cell.ClearCell();
             }
+        }
+
+        public void ShowUI()
+        {
+            canvas.enabled = true;
+            cellContainer.gameObject.SetActive(true);
+        }
+
+        public void HideUI()
+        {
+            canvas.enabled = false;
+            cellContainer.gameObject.SetActive(false);
         }
     }
 }
