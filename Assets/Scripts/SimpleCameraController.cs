@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace UnityTemplateProjects
 {
+    /// <summary>
+    /// Simple camera controller. A default Unity logic of the URP.
+    /// </summary>
     public class SimpleCameraController : MonoBehaviour
     {
         class CameraState

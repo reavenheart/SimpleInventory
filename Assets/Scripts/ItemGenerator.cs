@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A simple item generator. Instantiates items on the floor
+/// </summary>
 public class ItemGenerator : MonoBehaviour
 {
     [SerializeField] private List<GameObject> items = new List<GameObject>();

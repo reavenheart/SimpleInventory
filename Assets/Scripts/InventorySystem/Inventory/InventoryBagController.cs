@@ -12,6 +12,9 @@ namespace InventorySystem
     {
     }
     
+    /// <summary>
+    /// A bag controller, which is responsible for working with items and updating UI
+    /// </summary>
     public class InventoryBagController : MonoBehaviour, IInventoryUICheckable
     {
         [SerializeField][Range(1,5)] private int size = 3;
@@ -66,6 +69,11 @@ namespace InventorySystem
             }
         }
 
+        /// <summary>
+        /// Create a copy of the original item for UI
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="copy"></param>
         private void CreateBagCopy(IBagThrowable item, out GameObject copy)
         {
             var itemGO = item as MonoBehaviour;

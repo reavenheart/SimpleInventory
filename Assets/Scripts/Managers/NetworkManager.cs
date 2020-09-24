@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 
 namespace Managers
 {
+    /// <summary>
+    /// A simple network manager to send events of the items
+    /// </summary>
     public class NetworkManager : MonoBehaviour
     {
         [SerializeField] private string authKey = "BMeHG5xqJeB4qCjpuJCTQLsqNGaqkfB6";

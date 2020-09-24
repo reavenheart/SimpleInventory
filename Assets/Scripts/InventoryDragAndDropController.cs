@@ -9,8 +9,11 @@ using UnityEngine.UI;
 using UnityTemplateProjects;
 using Utils;
 
+/// <summary>
+/// A controller that is responsible for all the user interaction with inventory bag and its items
+/// </summary>
 [RequireComponent(typeof(SimpleCameraController))]
-public class ObjectDragAndDrop : MonoBehaviour
+public class InventoryDragAndDropController : MonoBehaviour
 {
     [SerializeField] private Camera renderCamera;
     [SerializeField] private LayerMask draggableLayerMask = 0;
@@ -68,6 +71,10 @@ public class ObjectDragAndDrop : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks is can drag any item or if can show UI
+    /// </summary>
+    /// <param name="ray"></param>
     private void CheckIfCanDrag(Ray ray)
     {
         RaycastHit hit;
@@ -124,6 +131,10 @@ public class ObjectDragAndDrop : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Main logic for dragging the item
+    /// </summary>
+    /// <param name="ray"></param>
     private void DragItem(Ray ray)
     {
         if (draggingTransform != null)

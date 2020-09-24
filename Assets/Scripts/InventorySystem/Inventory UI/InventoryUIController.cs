@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace InventorySystem
 {
+    /// <summary>
+    /// Inventory UI Controller. Responsible for generating cells, showing and hiding UI
+    /// </summary>
     public class InventoryUIController : MonoBehaviour
     {
         [SerializeField] private InventoryCellController cellPrefab = null;

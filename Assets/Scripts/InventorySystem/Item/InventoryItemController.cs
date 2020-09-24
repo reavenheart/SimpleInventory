@@ -6,6 +6,9 @@ using Utils;
 
 namespace InventorySystem
 {
+    /// <summary>
+    /// Inventory Item controller. Responsible with its interation logic and its events
+    /// </summary>
     public class InventoryItemController : MonoBehaviour, IDraggable, IBagThrowable
     {
         [SerializeField] private InventoryItemModel model = new InventoryItemModel();
@@ -72,8 +75,6 @@ namespace InventorySystem
 
         public void RemoveFromBag()
         {
-            //PutOnOriginalPosition();
-            //OnDragEvent(false);
             transform.SetParent(null);
             
             transform.DOMove(transform.position + Vector3.up * 0.2f, 0.25f).OnComplete(() =>

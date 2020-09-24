@@ -2,6 +2,9 @@
 
 namespace InventorySystem
 {
+    /// <summary>
+    /// Inventory cell Item controller. Responsible for cell presentation and logic
+    /// </summary>
     public class InventoryCellController : MonoBehaviour
     {
         [SerializeField] private InventoryCellModel model = null;
