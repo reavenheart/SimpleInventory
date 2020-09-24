@@ -151,6 +151,7 @@ public class InventoryDragAndDropController : MonoBehaviour
             RaycastHit hit;
             Vector3 currentScreenSpace;
                 
+            //Snap object to the bag inventory if the mouse if over it
             if (Physics.Raycast(ray, out hit, maxRayDistance, inventoryLayerMask))
             {
                 isOverBag = true;
@@ -158,9 +159,13 @@ public class InventoryDragAndDropController : MonoBehaviour
 
                 currentScreenSpace =
                     new Vector3(Input.mousePosition.x, Input.mousePosition.y, bagScreenPosition.z);
+                
+                var bagOffet = bag.position - renderCamera.ScreenToWorldPoint(
+                    new Vector3(Input.mousePosition.x, Input.mousePosition.y, bagScreenPosition.z));
+                
                 draggingTransform.position = Vector3.Lerp(
                     draggingTransform.position,
-                    renderCamera.ScreenToWorldPoint(currentScreenSpace) + offsetValue,
+                    renderCamera.ScreenToWorldPoint(currentScreenSpace) + bagOffet,
                     0.5f);
 
                 draggingTransform.localScale = Vector3.Lerp(
